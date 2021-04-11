@@ -22,7 +22,7 @@ class ScaleUtil {
     }
 
     static divideScale(scale : number, i : number, n :number) : number {
-        return Math.min(1 / n, ScaleUtil.divideScale(scale, i, n)) * n 
+        return Math.min(1 / n, ScaleUtil.maxScale(scale, i, n)) * n 
     }
 
     static sinify(scale : number) : number {
@@ -43,7 +43,7 @@ class DrawingUtil {
         const sf4 : number = ScaleUtil.divideScale(scale, lines, parts)
         const sf5 : number = ScaleUtil.divideScale(scale, lines + 1, parts)
         DrawingUtil.drawLine(context, 0, 0, size * sf4, size * sf4)
-        DrawingUtil.drawLine(context, 0, 0, size * sf5, size * sf5)
+        DrawingUtil.drawLine(context, 0, 0, size * sf4, -size * sf4)
         context.save()
         context.beginPath()
         context.moveTo(0, 0)
@@ -51,7 +51,7 @@ class DrawingUtil {
         context.lineTo(size, size)
         context.lineTo(0, 0)
         context.clip()
-        context.fillRect(0, -size, size * scale, 2 * size)
+        context.fillRect(0, -size, size * sf5, 2 * size)
         context.restore()
     }
 
@@ -59,7 +59,7 @@ class DrawingUtil {
         for (var j = 0; j < 4; j++) {
             const sf : number = ScaleUtil.divideScale(scale, j, parts)
             context.save()
-            context.rotate(j * sf * Math.PI / 2)
+            context.rotate(j * Math.PI / 2)
             DrawingUtil.drawLine(context, size, -size, size, -size + 2 * size * sf)
             context.restore()
         }
