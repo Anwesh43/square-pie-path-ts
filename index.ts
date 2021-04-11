@@ -224,3 +224,24 @@ class SquarePiePath {
         this.curr.startUpdating(cb)
     }
 }
+
+class Renderer {
+
+    spp : SquarePiePath = new SquarePiePath()
+    animator : Animator = new Animator()
+
+    render(context : CanvasRenderingContext2D) {
+        this.spp.draw(context)
+    }
+
+    handleTap(cb : Function) {
+        this.spp.startUpdating(() => {
+            this.animator.start(() => {
+                cb()
+                this.spp.update(() => {
+                    this.animator.stop()
+                })
+            })
+        })
+    }
+}
